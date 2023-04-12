@@ -3,11 +3,87 @@
     padding: 0;
     box-sizing: border-box;
 }
+body{
+    height: 100%;
+    margin: 0;
+}
+/*Hero and footer #1F2937
+main text 48px extra-bold #F9FAF8
+sec text 18px #E5E7EB
+Logo 24px  #F9FAF8
+button #3882F6
+info header 36px extra-bold #1F2937
+quote back #E5E7EB
+quote text 36px light italic #1F2937
+*/
+nav{
+    background-color: #1F2937;
+    display:flex;
+    justify-content: space-between;
+    position:fixed;
+    top:0;
+    width: 100%;
 
+}
+nav h1{
+    font-size: 48px;
+    font-weight: bold;
+    color:#F9FAF8;
+    
+}
 nav ul{
+    font-size: medium;
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 35vw;
+    align-items:center;
+    list-style:none;   
+}
+nav a{
+    color:#F9FAF8;
+    text-decoration: none;
+}
+.signIn{
+    display: flex;
+    flex-direction: row;
+    background-color: #1F2937;
     justify-content: space-between;
 }
+.heroText{
+    background-color: #1F2937;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex:1 1 auto;
+}
+.heroText h1{
+    font-size: 48px;
+    font-weight: bolder;
+    color: #F9FAF8;
+    
+}
+.heroText h2{
+    color: #E5E7EB;
+    font-size: 18px;
+}
+.heroText button{
+    background-color: #3882F6;
+    color: #E5E7EB;
+    padding: 2em;
+}
+.signIn img{
+    flex: .5 2 auto;
+    padding:.5 em;
+    width: 100%;
+}
+.detail{
+
+}
+.quote{
+
+}
+.action{}
 
 h4{
     gap: 8px;
