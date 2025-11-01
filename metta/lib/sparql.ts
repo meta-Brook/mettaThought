@@ -31,12 +31,13 @@ export interface Triple {
  * Execute a SPARQL SELECT query
  */
 export async function query(sparqlQuery: string): Promise<SPARQLResponse> {
-  const url = `${SPARQL_ENDPOINT}?query=${encodeURIComponent(sparqlQuery)}`;
+  // Use API proxy to avoid CORS issues
+  const url = `/api/sparql?query=${encodeURIComponent(sparqlQuery)}`;
   
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      'Accept': 'application/sparql-results+json',
+      'Accept': 'application/json',
     },
   });
 
@@ -51,7 +52,7 @@ export async function query(sparqlQuery: string): Promise<SPARQLResponse> {
  * Execute a SPARQL CONSTRUCT query
  */
 export async function construct(sparqlQuery: string): Promise<Triple[]> {
-  const url = `${SPARQL_ENDPOINT}?query=${encodeURIComponent(sparqlQuery)}`;
+  const url = `/api/sparql?query=${encodeURIComponent(sparqlQuery)}`;
   
   const response = await fetch(url, {
     method: 'GET',

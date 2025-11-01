@@ -1,10 +1,12 @@
 // app/test/page.tsx
 
+import { query } from '@/lib/sparql';
+
+
 export const dynamic = 'force-dynamic';
 
 
 
-import { query } from '@/lib/sparql';
 
 export default async function TestPage() {
   try {
