@@ -77,6 +77,26 @@ export async function construct(sparqlQuery: string): Promise<Triple[]> {
 }
 
 /**
+ * Execute a SPARQL INSERT DATA query
+ */
+export async function insert(triples: string): Promise<void> {
+  const sparqlUpdate = `INSERT DATA { ${triples} }`;
+  
+  const response = await fetch('/api/sparql/insert', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ update: sparqlUpdate }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Insert failed');
+  }
+}
+
+/**
  * Fetch all triples about a specific entity
  */
 export async function fetchEntity(uri: string): Promise<Triple[]> {

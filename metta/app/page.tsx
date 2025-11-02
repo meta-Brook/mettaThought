@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useEntity } from '@/hooks/useSPARQL';
 
 export default function ViewerPage() {
-  const [currentUri, setCurrentUri] = useState<string>('http://example.org/person/alice');
+  const [currentUri, setCurrentUri] = useState<string>('http://mettathought.com/person/alice');
   const { data, loading, error } = useEntity(currentUri);
 
   const handleLinkClick = (uri: string) => {
@@ -23,7 +23,7 @@ export default function ViewerPage() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Entity Viewer</h1>
-      
+
       <div className="mb-4 p-4 bg-gray-100 rounded">
         <p className="text-sm text-gray-600">Current URI:</p>
         <p className="font-mono text-sm break-all">{currentUri}</p>
@@ -73,6 +73,14 @@ export default function ViewerPage() {
             Bob
           </button>
         </div>
+      </div>
+      <div className="mb-8">
+        <a
+          href="/editor"
+          className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 inline-block"
+        >
+          Go to Editor
+        </a>
       </div>
     </div>
   );
