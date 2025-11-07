@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useSPARQLQuery } from '@/hooks/useSPARQL';
+import { useSearchParams} from 'next/navigation';
 import Link from 'next/link';
 
 export default function SearchPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [submittedTerm, setSubmittedTerm] = useState('');
-  const [hasSearched, setHasSearched] = useState(false);
+const searchParams = useSearchParams();
+let submittedTerm = searchParams.get('term') || '';
+
+  
 
   const conceptQuery = `
     SELECT DISTINCT ?concept WHERE {
@@ -30,18 +32,16 @@ export default function SearchPage() {
   `;
 
   const { data: concepts, loading: conceptsLoading } = useSPARQLQuery(
-    hasSearched && submittedTerm ? conceptQuery : ''
+    submittedTerm ? conceptQuery : ''
   );
 
   const { data: args, loading: argumentsLoading } = useSPARQLQuery(
-    hasSearched && submittedTerm ? argumentQuery : ''
+    submittedTerm ? argumentQuery : ''
   );
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmittedTerm(searchTerm);
-    setHasSearched(true);
-  };
+if (!submittedTerm) {
+  return <p className="p-8">Enter a term in the search bar above to get started.</p>;
+}
 
   const extractLabel = (uri: string) => {
     return uri.split('/').pop()?.replace(/-/g, ' ') || uri;
@@ -51,29 +51,13 @@ export default function SearchPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Search</h1>
 
-      <form onSubmit={handleSearch} className="mb-8">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search concepts and arguments..."
-            className="flex-1 border rounded px-4 py-2"
-          />
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Search
-          </button>
-        </div>
-      </form>
+     
 
-      {hasSearched && (conceptsLoading || argumentsLoading) && (
+      {(conceptsLoading || argumentsLoading) && (
         <p>Searching...</p>
       )}
 
-      {hasSearched && !conceptsLoading && !argumentsLoading && (
+      {!conceptsLoading && !argumentsLoading && (
         <>
           <div className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">

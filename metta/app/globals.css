@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
+/* Base theme (light) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background: #0b0b0c;
+  --color-foreground: #f5f5f7;
+  --color-primary: #3b82f6;
+  --color-secondary: #facc15;
+
+  --button-color: #3b82f6;
+  --button-border: #051938;
+
+
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark theme */
+[data-theme="light"] {
+
+    --color-background: #ffffff;
+  --color-foreground: #0b0b0c;
+  --color-primary: #1e40af; /* example primary */
+  --color-secondary: #f59e0b;
+
+  --button-color: #3b82f6;
+  --button-border: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Sepia theme */
+[data-theme="sepia"] {
+  --color-background: #f4ecd8;
+  --color-foreground: #3e2c00;
+  --color-primary: #a16207;
+  --color-secondary: #b45309;
+
+  --button-color: #3b82f6;
+  --button-border: #000000;
 }
 
+/* Apply variables */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
+
+button{
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  background-color: var(--button-color);
+  border-color: var(--button-border);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 1.5rem;
+  padding-left: 0.25rem;
+padding-right: 0.25rem;
+padding-top: 0.25rem;
+padding-bottom: 0.25rem;
+ padding: 0.5rem 1.25rem;
+
+}
+
+/* Optional: define Tailwind utility overrides using CSS variables */
+.bg-bg { background-color: var(--color-background); }
+.text-fg { color: var(--color-foreground); }
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
