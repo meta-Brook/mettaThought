@@ -1,11 +1,11 @@
 'use client';
 
-import { Suspense } from 'react';
+import { connection } from 'next/server';
 import { useSPARQLQuery } from '@/hooks/useSPARQL';
 import { useSearchParams} from 'next/navigation';
 import Link from 'next/link';
 
-export default function SearchPage() {
+export default async function SearchPage() {
 const searchParams = useSearchParams();
 let submittedTerm = searchParams.get('term') || '';
 
@@ -47,8 +47,9 @@ if (!submittedTerm) {
     return uri.split('/').pop()?.replace(/-/g, ' ') || uri;
   };
 
+  await connection();
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Search</h1>
 
@@ -107,6 +108,5 @@ if (!submittedTerm) {
         </>
       )}
     </div>
-    </Suspense>
   );
 }
