@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense } from 'react';
 import { useSPARQLQuery } from '@/hooks/useSPARQL';
 import { useSearchParams} from 'next/navigation';
 import Link from 'next/link';
@@ -48,6 +48,7 @@ if (!submittedTerm) {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Search</h1>
 
@@ -106,5 +107,6 @@ if (!submittedTerm) {
         </>
       )}
     </div>
+    </Suspense>
   );
 }
