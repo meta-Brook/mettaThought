@@ -3,11 +3,16 @@
 import { useSPARQLQuery } from '@/hooks/useSPARQL';
 import { useSearchParams} from 'next/navigation';
 import Link from 'next/link';
+import { use } from 'react'
+ 
 
-export default function SearchPage() {
-const searchParams = useSearchParams();
-let submittedTerm = searchParams.get('term') || '';
+export default function SearchPage({
+  searchParams,
+}:{
+  searchParams: Promise<{ [key:string]: string| string[]| undefined }>
+}){
 
+const submittedTerm = use(searchParams).term
   
 
   const conceptQuery = `
