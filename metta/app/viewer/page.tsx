@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useSPARQLQuery } from '@/hooks/useSPARQL';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import ArgumentList from '../components/ArguementList';
 
-export default function ViewerPage() {
-  const searchParams = useSearchParams();
-  const uri = searchParams.get('uri');
+import Link from 'next/link';
+import { use } from 'react'
+ 
+
+export default function viewerPage({
+  searchParams,
+}:{
+  searchParams: Promise<{ [key:string]: string| string[]| undefined }>
+}){
+
+const uri = use(searchParams).uri
 
   const query = uri ? `
     SELECT ?arg ?subject ?predicate ?object ?confidence WHERE {
@@ -40,7 +45,7 @@ export default function ViewerPage() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">{extractLabel(uri)}</h1>
+      <h1 className="text-3xl font-bold mb-2">{uri}</h1>
       <p className="text-sm text-gray-600 mb-8 break-all">{uri}</p>
 
       <h2 className="text-2xl font-semibold mb-4">
