@@ -1,0 +1,14 @@
+services:
+  - type: private_service
+    name: neo4j
+    envVars:
+      NEO4J_AUTH: ${NEO4J_AUTH}  # change this
+      NEO4J_dbms_connector_bolt_advertised__address: "neo4j:7687"
+      NEO4J_dbms_connector_bolt_listen__address: "0.0.0.0:7687"
+    dockerfilePath: ./Dockerfile
+    disk:
+      name: neo4j-data
+      mountPath: /data
+      sizeGB: 10
+    healthCheckPath: /
+    autoDeploy: true
