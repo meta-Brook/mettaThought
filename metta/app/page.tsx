@@ -1,30 +1,36 @@
-// app/viewer/page.tsx
-'use client';
+// app/page.tsx
+import { runQuery } from "@/lib/neo4j";
+import EntryForm from "./components/EntryForm"
+import View from "./components/View"
 
-import { useState } from 'react';
-import { useEntity } from '@/hooks/useSPARQL';
+export default async function HomePage() {
+  // Run a simple query to fetch your Argument nodes
+  const records = await runQuery(`
+    MATCH (a:Argument)
+    RETURN a
+    LIMIT 10
+  `);
 
+  // Extract the properties from each record
+  const argumentsList = records.map(record => record.get("a").properties);
 
-export default function HomePage() {
- 
-
-  const handleLinkClick = (uri: string) => {
-    
-  };
-
-
-
+  
   return (
     <div>
-<div className="min-h-screen flex flex-col bg-bg text-fg transition-colors duration-300">
-  <h1 className="text-5xl font-bold mb-6 text-primary">Welcome to MettaThought</h1>
-        <p className="max-w-2xl text-lg text-secondary mb-8">
-          Explore ideas, arguments, and connections — discover meaning through structured thought.
-        </p>
-        <p>Please search for a starting term or start with <a href="/search?term=debate">debat</a></p>
-</div>
-
+      <h1>Arguments</h1>
+      <ul>
+        {argumentsList.map((arg, index) => (
+          <li key={index}>
+            <strong>{arg.name}</strong>: {arg.description}
+          </li>
+        ))}
+      </ul>
+      <div>
+        <View label='test' relationship='PRO'/>
+      </div>
+      <div>
+        <EntryForm />
+      </div>
     </div>
-   
   );
 }

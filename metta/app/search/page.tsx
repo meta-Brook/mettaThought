@@ -1,114 +1,76 @@
-'use client';
+'use client'
 
-import { useSPARQLQuery } from '@/hooks/useSPARQL';
+import View from "@/app/components/View";
 import Link from 'next/link';
-import { use } from 'react'
- 
+import { useEffect, useState } from 'react'
+import { useSearchParams } from "next/navigation";
 
-export default function SearchPage({
-  searchParams,
-}:{
-  searchParams: Promise<{ [key:string]: string| string[]| undefined }>
-}){
+type ResultNode = {
+  name?: string; // adjust depending on your node properties
+  [key: string]: any;
+};
 
-const submittedTerm = use(searchParams).term
-  
+export default function Concept() {
+const [results, setResults] = useState<ResultNode[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const conceptQuery = `
-    SELECT DISTINCT ?concept WHERE {
-      ?concept a <http://mettathought.com/Concept> .
-      FILTER(CONTAINS(LCASE(STR(?concept)), LCASE("${submittedTerm}")))
-    } LIMIT 20
-  `;
+    //do a search in the database where the term searched is the term in the url
+const param = useSearchParams();
+const id = param.get("term");
 
-  const argumentQuery = `
-    SELECT ?arg ?subject ?predicate ?object WHERE {
-      ?arg a <http://mettathought.com/Argument> ;
-           <http://mettathought.com/subject> ?subject ;
-           <http://mettathought.com/predicate> ?predicate ;
-           <http://mettathought.com/object> ?object .
-      FILTER(
-        CONTAINS(LCASE(STR(?subject)), LCASE("${submittedTerm}")) ||
-        CONTAINS(LCASE(STR(?object)), LCASE("${submittedTerm}"))
-      )
-    } LIMIT 20
-  `;
+console.log(id);
+useEffect(() =>{
+if(!id)return
 
-  const { data: concepts, loading: conceptsLoading } = useSPARQLQuery(
-    submittedTerm ? conceptQuery : ''
-  );
+    const fetchData = async () => {
+        setLoading(true);
+        setError('');
 
-  const { data: args, loading: argumentsLoading } = useSPARQLQuery(
-    submittedTerm ? argumentQuery : ''
-  );
+        const cypher =`
+        MATCH (s:Concept {name:"${id}"})-[r]->(t)
+        RETURN DISTINCT type(r) AS n 
+        `;
 
-if (!submittedTerm) {
-  return <p className="p-8">Enter a term in the search bar above to get started.</p>;
-}
+        try {
+        const res = await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cypher, params: {} }),
+        });
 
-  const extractLabel = (uri: string) => {
-    return uri.split('/').pop()?.replace(/-/g, ' ') || uri;
-  };
-  
+        const data = await res.json();
+        
+        if (data.success) {
+          setResults(data.result);
+        } else {
+          setError(data.error || 'Unknown error');
+        }
+      } catch(err){
+        setError('Error fetching data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+      
+    };
 
-  return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Search</h1>
+    fetchData();
+    
+},[id])
 
-     
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!results.length) return <p>No results found.</p>;
 
-      {(conceptsLoading || argumentsLoading) && (
-        <p>Searching...</p>
-      )}
+    return (
+    <div className="flex ">
+        {results.map((r:any, index: number) => (
+           <div className="flex" key={index} ><View label={id} relationship={r.n}/> </div>
+        ))}
+        
 
-      {!conceptsLoading && !argumentsLoading && (
-        <>
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">
-              Concepts ({concepts?.results.bindings.length || 0})
-            </h2>
-            {concepts?.results.bindings.length ? (
-              <div className="space-y-2">
-                {concepts.results.bindings.map((binding, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/viewer?uri=${encodeURIComponent(binding.concept.value)}`}
-                    className="block p-3 border rounded hover:bg-gray-50"
-                  >
-                    {extractLabel(binding.concept.value)}
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">No concepts found</p>
-            )}
-          </div>
+      </div>
+    );
 
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">
-              Arguments ({args?.results.bindings.length || 0})
-            </h2>
-            {args?.results.bindings.length ? (
-              <div className="space-y-2">
-                {args.results.bindings.map((binding, idx) => (
-                  <div key={idx} className="p-3 border rounded">
-                    <Link
-                      href={`/viewer?uri=${encodeURIComponent(binding.arg.value)}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      {extractLabel(binding.subject.value)} →{' '}
-                      {extractLabel(binding.predicate.value)} →{' '}
-                      {extractLabel(binding.object.value)}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">No arguments found</p>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
+}/*  */
