@@ -9,6 +9,12 @@ const NEO4J_URI = process.env.NEO4J_URI;
 const NEO4J_USER = process.env.NEO4J_USER;
 const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
 
+console.log({
+  uri: !!process.env.NEO4J_URI,
+  user: !!process.env.NEO4J_USER,
+  pass: !!process.env.NEO4J_PASSWORD,
+});
+
 if (!NEO4J_URI || !NEO4J_USER || !NEO4J_PASSWORD) {
   throw new Error('Missing Neo4j environment variables: NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD');
 }
