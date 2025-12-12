@@ -17,19 +17,11 @@ export default async function HomePage() {
   
   return (
     <div>
-      <h1>Arguments</h1>
-      <ul>
-        {argumentsList.map((arg, index) => (
-          <li key={index}>
-            <strong>{arg.name}</strong>: {arg.description}
-          </li>
-        ))}
-      </ul>
+      <h1>Add new entry</h1>
+      
+    
       <div>
-        <View label='test' relationship='PRO'/>
-      </div>
-      <div>
-        <EntryForm />
+        <EntryForm rel='none' val='none' />
       </div>
     </div>
   );

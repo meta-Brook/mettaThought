@@ -15,7 +15,7 @@ useEffect(() => {
 }, [theme]);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 fixed bottom-0 right-0">
       <button onClick={() => setTheme('light')} className="border rounded p-2!">Light</button>
       <button onClick={() => setTheme('dark')} className="border rounded p-2!">Dark</button>
       <button onClick={() => setTheme('sepia')} className="border rounded p-2!">Sepia</button>

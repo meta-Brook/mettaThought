@@ -2,12 +2,18 @@
 
 import { useState } from 'react';
 
-export default function EntryForm() {
+type Props = {
+  rel: string;
+  val: string;
+};
+
+export default function EntryForm({rel,val}:Props) {
   const [name, setName] = useState('');
   const [type, setType] = useState<'property' | 'relationship'>('property');
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +72,7 @@ export default function EntryForm() {
       setKey('');
       setValue('');
       setMessage('Concept created successfully');
+      setType('relationship');
     } catch (err) {
       console.error(err);
       setMessage('Error submitting form');
@@ -73,15 +80,35 @@ export default function EntryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '300px' }}>
+    <form onSubmit={handleSubmit} className="border flex flex-col gap-2 w-sm">
       <input
-        placeholder="Concept name"
+        placeholder="Concept"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        className="border m-3 p-1"
         required
       />
 
-      <div>
+  
+
+      <input
+        placeholder="Relationship type"
+        value={key}
+        onChange={(e) => setKey(e.target.value)}
+        className="border m-3 p-1"
+      />
+      <input
+        placeholder="Target node name"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="border m-3 p-1"
+      />
+      <button className="border" type="submit">Submit</button>
+      <p>{message}</p>
+    </form>
+  );
+}
+   /* <div>
         <label>
           <input
             type="radio"
@@ -103,19 +130,4 @@ export default function EntryForm() {
           Relationship
         </label>
       </div>
-
-      <input
-        placeholder="Property key or relationship type"
-        value={key}
-        onChange={(e) => setKey(e.target.value)}
-      />
-      <input
-        placeholder="Property value or target node name"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <button type="submit">Submit</button>
-      <p>{message}</p>
-    </form>
-  );
-}
+      */

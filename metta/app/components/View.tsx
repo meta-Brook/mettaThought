@@ -61,11 +61,11 @@ console.log(relationship);
   if (!results.length) return <p>No results found.</p>;
 
   return (
-    <div className="border-2 .border-black flex-h">
+    <div className="border-2 .border-black flex-h p-2 m-3">
       <h1 >{relationship}</h1>
     <ul className="flex-h list-disc pl-6">
       {results.map((r: any, index: number) => (
-        <li className="list-disc flex" key={index}>
+        <li  key={index}>
           
             {r.t.properties.name}
           
