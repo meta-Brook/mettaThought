@@ -1,5 +1,0 @@
-services:
-  - type: web
-    name: blazegraph
-    env: docker
-    dockerfilePath: ./Dockerfile
