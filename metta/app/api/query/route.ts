@@ -1,5 +1,5 @@
 // app/api/run-query/route.ts
-import { runQuery } from '@/lib/neo4j';
+import { runQuery } from '@/lib/neo4j2';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {

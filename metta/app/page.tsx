@@ -1,5 +1,5 @@
 // app/page.tsx
-import { runQuery } from "@/lib/neo4j";
+import { runQuery } from "@/lib/neo4j2";
 import EntryForm from "./components/EntryForm"
 import View from "./components/View"
 
