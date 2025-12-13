@@ -10,7 +10,7 @@ const [term,setTerm] = useState('');
 const handleSubmit =(e: React.FormEvent) => {
   e.preventDefault();
   if(!term.trim()) return;
-  router.push(`/search?term=${encodeURIComponent(term)}`);
+  router.push(`/concept/${encodeURIComponent(term)}`);
 }
 
     return (
