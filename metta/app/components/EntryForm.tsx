@@ -9,75 +9,64 @@ type Props = {
 
 export default function EntryForm({rel,val}:Props) {
   const [name, setName] = useState('');
-  const [type, setType] = useState<'property' | 'relationship'>('property');
+
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
   
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage('');
+  e.preventDefault();
+  setMessage('');
 
-    let cypher = '';
-    const params: Record<string, any> = { name, value };
+  if (!name || !key || !value) {
+    setMessage('All fields are required');
+    return;
+  }
 
-    if (!name) {
-      setMessage('Name is required');
+  const relType = key.trim().toUpperCase();
+  if (!/^[A-Z_][A-Z0-9_]*$/.test(relType)) {
+    setMessage('Invalid relationship type');
+    return;
+  }
+
+  const cypher = `
+    MERGE (a:Concept {name: $source})
+    MERGE (b:Concept {name: $target})
+    MERGE (a)-[:${relType}]->(b)
+    RETURN a, b
+  `;
+
+  try {
+    const res = await fetch('/api/query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cypher,
+        params: {
+          source: name,
+          target: value,
+        },
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      setMessage(data.error || 'Query failed');
       return;
     }
 
-    // Always create the new Concept node first
-    cypher = `MERGE (n:Concept {name: $name}) RETURN n`;
-   
-    try {
-      // First create the Concept node
-      const resNode = await fetch('/api/query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cypher, params }),
-      });
-      const dataNode = await resNode.json();
+    setName('');
+    setKey('');
+    setValue('');
+    setMessage('Relationship created');
+  } catch (err) {
+    console.error(err);
+    setMessage('Error submitting form');
+  }
+};
 
-      if (!dataNode.success) {
-        setMessage(`Error creating node: ${dataNode.error}`);
-        return;
-      }
-
-      // Then, if type is property or relationship, optionally create it
-      if (type === 'property' && key && value) {
-        const propCypher = `MATCH (n:Concept {name: $name}) SET n.${key} = $value RETURN n`;
-        await fetch('/api/query', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cypher: propCypher, params }),
-        });
-      } else if (type === 'relationship' && key && value) {
-        // For simplicity, assume target node already exists
-        const relCypher = `
-          MATCH (a:Concept {name: $name})
-          MERGE (b:Concept {name: $value})
-          MERGE (a)-[:${key}]->(b)
-          RETURN a, b
-        `;
-        await fetch('/api/query', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cypher: relCypher, params }),
-        });
-      }
-
-      // Clear form
-      setName('');
-      setKey('');
-      setValue('');
-      setMessage('Concept created successfully');
-      setType('relationship');
-    } catch (err) {
-      console.error(err);
-      setMessage('Error submitting form');
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit} className="border flex flex-col gap-2 w-sm">
@@ -108,26 +97,3 @@ export default function EntryForm({rel,val}:Props) {
     </form>
   );
 }
-   /* <div>
-        <label>
-          <input
-            type="radio"
-            name="type"
-            value="property"
-            checked={type === 'property'}
-            onChange={() => setType('property')}
-          />
-          Property
-        </label>
-        <label style={{ marginLeft: '12px' }}>
-          <input
-            type="radio"
-            name="type"
-            value="relationship"
-            checked={type === 'relationship'}
-            onChange={() => setType('relationship')}
-          />
-          Relationship
-        </label>
-      </div>
-      */
