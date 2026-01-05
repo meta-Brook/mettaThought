@@ -9,9 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "cytoscape": "^3.33.1",
+    "express": "^5.2.1",
     "neo4j-driver": "^6.0.1",
     "next": "16.0.5",
     "react": "19.2.0",
+    "react-cytoscapejs": "^2.0.0",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
