@@ -5,12 +5,12 @@ import {useState} from 'react';
 
 export default function Navbar() {
   const router = useRouter();
-const [term,setTerm] = useState('');
+const [uuid,setUUID] = useState('');
 
 const handleSubmit =(e: React.FormEvent) => {
   e.preventDefault();
-  if(!term.trim()) return;
-  router.push(`/concept/${encodeURIComponent(term)}`);
+  if(!uuid.trim()) return;
+  router.push(`/concept/${encodeURIComponent(uuid)}`);
 }
 
     return (
@@ -20,8 +20,8 @@ const handleSubmit =(e: React.FormEvent) => {
                 <form onSubmit={handleSubmit} className='flex items-center gap-2'>
                     <input
                         type="text"
-                        value={term}
-                        onChange={(e) => setTerm(e.target.value)}
+                        value={uuid}
+                        onChange={(e) => setUUID(e.target.value)}
                         placeholder="Search..."
                         className="bg-(--color-background) text-(--color-foreground) placeholder-color-foreground/70 border border-color-foreground/30 rounded px-3 py-1 focus:outline-none focus:border-(--color-foreground)/60"
                     />

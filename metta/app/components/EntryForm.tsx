@@ -8,6 +8,8 @@ type Props = {
 };
 
 export default function EntryForm({rel,val}:Props) {
+console.log("show the Entry form");
+
   const [name, setName] = useState('');
 
   const [key, setKey] = useState('');
@@ -30,9 +32,13 @@ export default function EntryForm({rel,val}:Props) {
     return;
   }
 
+
+
   const cypher = `
     MERGE (a:Concept {name: $source})
+    ON CREATE SET a.uuid = randomUUID()
     MERGE (b:Concept {name: $target})
+    ON CREATE SET b.uuit = randomUUID()
     MERGE (a)-[:${relType}]->(b)
     RETURN a, b
   `;

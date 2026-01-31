@@ -28,8 +28,8 @@ useEffect(() =>{
         setError('');
 
         const cypher =`
-        MATCH (s:Concept {name: $name })-[r]->(t)
-        RETURN DISTINCT type(r) AS n 
+        MATCH g=(s:Concept {uuid: $name })-[r]-(t)
+        RETURN s, type(r) AS n, t
         `;
 
         try {
@@ -61,18 +61,20 @@ useEffect(() =>{
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-  if (!results.length) return <p>No results found.</p>;
+  if (!results.length) return <p>No results found in [term].</p>;
 
     return (
+      <div>
+        <div>{results[0].s.properties.name}</div>
     <div className="flex ">
         {results.map((r:any, index: number) => (
            <div className="flex" key={index} >
-            <View label={term} relationship={r.n}/>
+            <View label={r.t.properties.name} relationship={r.n}/>
              </div>
         ))}
         
 
-      </div>
+      </div></div>
     );
 
 }/*  */

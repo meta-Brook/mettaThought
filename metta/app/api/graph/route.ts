@@ -1,61 +1,27 @@
 // app/api/graph/route.ts
 import { NextResponse } from "next/server";
-import { runQuery } from "@/lib/neo4j";
+import { runQuery } from "@/lib/neo4j/queries";
+import { GRAPH_QUERIES, GraphQueryKey } from "@/lib/graphQueries";
 
-export async function GET() {
-  const rows = await runQuery<{
-    a: any;
-    b: any;
-    r: any;
-  }>(`
-    MATCH (a)-[r]->(b)
-    RETURN a, r, b
-  `);
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+  const view = (searchParams.get("view") ?? "default") as GraphQueryKey;
 
-  const elements: any[] = [];
-  const seen = new Set<string>();
+  const cypher = GRAPH_QUERIES[view];
 
-  for (const row of rows) {
-    const a = row.a;
-    const b = row.b;
-    const r = row.r;
 
-    const aId = a.identity.toString();
-    const bId = b.identity.toString();
-    const rId = r.identity.toString();
-
-    if (!seen.has(aId)) {
-      seen.add(aId);
-      elements.push({
-        data: {
-          id: aId,
-          label: a.properties.name || a.properties.text,
-          ...a.properties
-        }
-      });
-    }
-
-    if (!seen.has(bId)) {
-      seen.add(bId);
-      elements.push({
-        data: {
-          id: bId,
-          label: b.properties.name || b.properties.text,
-          ...b.properties
-        }
-      });
-    }
-
-    elements.push({
-      data: {
-        id: rId,
-        source: aId,
-        target: bId,
-        label: r.type,
-        ...r.properties
-      }
-    });
+  if (!cypher) {
+    return NextResponse.json(
+      { error: "Unknown graph view" },
+      { status: 400 }
+    );
   }
+//note - I don't think that this is checking the right thing. maybe should be uuid here? Where is the thing that calls for this?
+  const params: Record<string, any> = {};
+  const name = searchParams.get("name");
+  if (name) params.name = name; // this will replace $name in the query
 
-  return NextResponse.json(elements);
+  const elements = await runQuery(cypher,params);
+
+  return NextResponse.json(elements); 
 }

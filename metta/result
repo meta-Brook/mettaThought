@@ -1,0 +1,134 @@
+[
+  {
+    "keys": [
+      "s",
+      "n",
+      "t"
+    ],
+    "length": 3,
+    "_fields": [
+      {
+        "identity": {
+          "low": 54,
+          "high": 0
+        },
+        "labels": [
+          "Concept"
+        ],
+        "properties": {
+          "name": "Soul",
+          "uuid": "2edc526c-6f3d-45aa-bf7e-dc090529bc03"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:54"
+      },
+      "INVOLVES",
+      {
+        "identity": {
+          "low": 30,
+          "high": 0
+        },
+        "labels": [
+          "Claim"
+        ],
+        "properties": {
+          "text": "Magnets have a soul.",
+          "uuid": "fa844451-e251-486e-adf1-9139fbb16c21"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:30"
+      }
+    ],
+    "_fieldLookup": {
+      "s": 0,
+      "n": 1,
+      "t": 2
+    }
+  },
+  {
+    "keys": [
+      "s",
+      "n",
+      "t"
+    ],
+    "length": 3,
+    "_fields": [
+      {
+        "identity": {
+          "low": 54,
+          "high": 0
+        },
+        "labels": [
+          "Concept"
+        ],
+        "properties": {
+          "name": "Soul",
+          "uuid": "2edc526c-6f3d-45aa-bf7e-dc090529bc03"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:54"
+      },
+      "INVOLVES",
+      {
+        "identity": {
+          "low": 43,
+          "high": 0
+        },
+        "labels": [
+          "Claim"
+        ],
+        "properties": {
+          "text": "Amber has a soul.",
+          "uuid": "fca13984-6724-4056-aece-56ac0b468830"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:43"
+      }
+    ],
+    "_fieldLookup": {
+      "s": 0,
+      "n": 1,
+      "t": 2
+    }
+  },
+  {
+    "keys": [
+      "s",
+      "n",
+      "t"
+    ],
+    "length": 3,
+    "_fields": [
+      {
+        "identity": {
+          "low": 54,
+          "high": 0
+        },
+        "labels": [
+          "Concept"
+        ],
+        "properties": {
+          "name": "Soul",
+          "uuid": "2edc526c-6f3d-45aa-bf7e-dc090529bc03"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:54"
+      },
+      "INVOLVES",
+      {
+        "identity": {
+          "low": 61,
+          "high": 0
+        },
+        "labels": [
+          "Concept"
+        ],
+        "properties": {
+          "name": "Christianity",
+          "uuid": "6d2e6684-aa4b-470d-a335-8ca7964de01e"
+        },
+        "elementId": "4:ecca4ae3-8d8d-4f9f-8fab-989c33d46ed3:61"
+      }
+    ],
+    "_fieldLookup": {
+      "s": 0,
+      "n": 1,
+      "t": 2
+    }
+  }
+]

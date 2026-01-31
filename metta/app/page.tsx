@@ -4,7 +4,7 @@ import EntryForm from "./components/EntryForm"
 import GraphView from "./components/GraphView"
 
 export default async function HomePage() {
-
+  console.log("main page open");
 
   
   return (

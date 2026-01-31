@@ -17,7 +17,7 @@ export default function View({ label, relationship }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-console.log(relationship);
+
 
   useEffect(() => {
     if (!label || !relationship) return;
@@ -58,7 +58,7 @@ console.log(relationship);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-  if (!results.length) return <p>No results found.</p>;
+  if (!results.length) return <p>No results found in View.</p>;
 
   return (
     <div className="border-2 .border-black flex-h p-2 m-3">
